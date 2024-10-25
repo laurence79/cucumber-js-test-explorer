@@ -1,28 +1,41 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+// @ts-check
 
-export default [{
-    files: ["**/*.ts"],
-}, {
-    plugins: {
-        "@typescript-eslint": typescriptEslint,
-    },
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
 
+export default tseslint.config(
+  eslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
+
+  {
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 2022,
-        sourceType: "module",
+      globals: globals.node,
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*.js', '*.mjs', '*.cjs'],
+          defaultProject: 'tsconfig.json',
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
+  },
 
+  {
+    files: ['*.cjs'],
     rules: {
-        "@typescript-eslint/naming-convention": ["warn", {
-            selector: "import",
-            format: ["camelCase", "PascalCase"],
-        }],
-
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        semi: "warn",
+      '@typescript-eslint/no-require-imports': 'off',
     },
-}];
+  },
+
+  {
+    files: ['*.js', '*.mjs', '*.cjs'],
+    rules: {
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
+    },
+  },
+);
