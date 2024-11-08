@@ -16,14 +16,13 @@ export const getRootItem = (controller: vscode.TestController) => {
 
 export const recycleRootItem = (
   controller: vscode.TestController,
-  workspace: vscode.WorkspaceFolder,
   extensionConfig: ExtensionConfig,
 ) => {
   controller.items.delete(ROOT_ITEM_ID);
 
   const item = controller.createTestItem(
     ROOT_ITEM_ID,
-    extensionConfig.cwd ?? workspace.name,
+    extensionConfig.name,
     extensionConfig.baseUri,
   );
 

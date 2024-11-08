@@ -18,7 +18,6 @@ const configFilesGlob = (extensionConfig: ExtensionConfig) => {
 
 const cucumberConfigWatcher = (
   controller: vscode.TestController,
-  workspace: vscode.WorkspaceFolder,
   extensionConfig: ExtensionConfig,
 ) => {
   const pattern = new vscode.RelativePattern(
@@ -29,7 +28,7 @@ const cucumberConfigWatcher = (
   const watcher = vscode.workspace.createFileSystemWatcher(pattern);
 
   const refresh = () => {
-    recycleRootItem(controller, workspace, extensionConfig);
+    recycleRootItem(controller, extensionConfig);
   };
 
   watcher.onDidDelete(refresh);

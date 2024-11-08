@@ -26,10 +26,10 @@ const testController = (
 
   controller.refreshHandler = () => {
     setCucumberConfigStale(extensionConfig);
-    recycleRootItem(controller, workspace, extensionConfig);
+    recycleRootItem(controller, extensionConfig);
   };
 
-  recycleRootItem(controller, workspace, extensionConfig);
+  recycleRootItem(controller, extensionConfig);
 
   controller.createRunProfile(
     'Run',
@@ -47,7 +47,7 @@ const testController = (
     },
   );
 
-  return [controller, ...watchers(controller, workspace, extensionConfig)];
+  return [controller, ...watchers(controller, extensionConfig)];
 };
 
 export default testController;
