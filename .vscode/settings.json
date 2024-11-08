@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "cSpell.language": "en-GB",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
@@ -25,4 +26,5 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.quoteStyle": "single",
   "typescript.referencesCodeLens.enabled": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
 }
