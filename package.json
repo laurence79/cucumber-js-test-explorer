@@ -1,14 +1,29 @@
 {
   "name": "cucumber-js-test-runner",
   "displayName": "Cucumber JS Test Runner",
-  "description": "Run cucumber-js tests in VS Code",
+  "description": "Run cucumber-js tests in the VS Code test explorer",
   "version": "0.0.1",
+  "homepage": "https://github.com/laurence79/cucumber-js-test-runner#readme",
+  "bugs": {
+    "url": "https://github.com/laurence79/cucumber-js-test-runner/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laurence79/cucumber-js-test-runner.git"
+  },
+  "license": "ISC",
+  "author": "laurence79",
   "engines": {
-    "vscode": "^1.94.0"
+    "vscode": "^1.59.0"
   },
   "categories": [
-    "Other"
+    "Testing"
   ],
+  "galleryBanner": {
+    "color": "#1F3545",
+    "theme": "dark"
+  },
+  "icon": "images/icon.png",
   "activationEvents": [
     "workspaceContains:**/*.feature"
   ],

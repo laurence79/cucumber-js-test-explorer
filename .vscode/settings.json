@@ -27,4 +27,7 @@
   "typescript.preferences.quoteStyle": "single",
   "typescript.referencesCodeLens.enabled": true,
   "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "color"
+  ],
 }
