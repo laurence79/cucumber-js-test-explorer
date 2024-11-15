@@ -1,4 +1,4 @@
-# Cucumber.js test runner for VS Code
+# Cucumber.js test explorer for VS Code
 
 This extension uses the new(ish) testing API found in vscode versions from 1.59 onwards to run your cucumber.js tests.
 
@@ -23,24 +23,24 @@ This extension contributes the following settings:
 
 | Key | Description | Default |
 |--|--|--|
-| `cucumberJsTestRunner.cwd` | Working directory, relative to the workspace root | Workspace root |
-| `cucumberJsTestRunner.configFile` | Path to the cucumber.js configuration file, relative to cwd | The cucumber.js [default](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md) |
-| `cucumberJsTestRunner.profiles` | Cucumber.js configuration profiles to use | None |
-| `cucumberJsTestRunner.envFiles` | .env files to load and pass to the cucumber.js runner, relative to cwd | None |
-| `cucumberJsTestRunner.env` | Environment variables to load and pass to the cucumber.js runner. Overrides any variables with the same name in .env files | None |
+| `cucumberJsTestExplorer.cwd` | Working directory, relative to the workspace root | Workspace root |
+| `cucumberJsTestExplorer.configFile` | Path to the cucumber.js configuration file, relative to cwd | The cucumber.js [default](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md) |
+| `cucumberJsTestExplorer.profiles` | Cucumber.js configuration profiles to use | None |
+| `cucumberJsTestExplorer.envFiles` | .env files to load and pass to the cucumber.js runner, relative to cwd | None |
+| `cucumberJsTestExplorer.env` | Environment variables to load and pass to the cucumber.js runner. Overrides any variables with the same name in .env files | None |
 
 ### Multiple configurations
 
-The above configuration can be repeated multiple times under the `cucumberJsTestRunner.virtualFolders` key to support multiple test controllers. This is useful for running different profiles or to support different test projects in a monorepo.
+The above configuration can be repeated multiple times under the `cucumberJsTestExplorer.virtualFolders` key to support multiple test controllers. This is useful for running different profiles or to support different test projects in a monorepo.
 
 In this scenario the root level configuration (if supplied) is overridden by each virtual folder configuration.
 
 **EXAMPLE**
 ```json
 {
-  "cucumberJsTestRunner.cwd": "e2e",
-  "cucumberJsTestRunner.envFiles": [".env"],
-  "cucumberJsTestRunner.virtualFolders": [
+  "cucumberJsTestExplorer.cwd": "e2e",
+  "cucumberJsTestExplorer.envFiles": [".env"],
+  "cucumberJsTestExplorer.virtualFolders": [
     {
       "name": "Safari",
       "profiles": ["safari"]

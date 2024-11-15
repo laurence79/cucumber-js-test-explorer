@@ -18,7 +18,7 @@ const readMainConfig = (workspaceUri: vscode.Uri): MainConfig | undefined => {
     workspaceUri,
   );
 
-  const main = configuration.get<MainConfig>('cucumberJsTestRunner');
+  const main = configuration.get<MainConfig>('cucumberJsTestExplorer');
 
   log.info('Extension configuration read', { config: main });
 
