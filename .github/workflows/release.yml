@@ -34,7 +34,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        artifacts: cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.visx
+        artifacts: cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.vsix
         name: ${{ steps.release.outputs.new_release_version }}
         omitBodyDuringUpdate: true
         omitPrereleaseDuringUpdate: true
@@ -44,6 +44,6 @@ jobs:
 
     - uses: lannonbr/vsce-action@4.0.0
       with:
-        args: "publish -i cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.visx"
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        args: "publish -i cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.vsix"
+      env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
