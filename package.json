@@ -2,7 +2,7 @@
   "name": "cucumber-js-test-runner",
   "displayName": "Cucumber JS Test Runner",
   "description": "Run cucumber-js tests in the VS Code test explorer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/laurence79/cucumber-js-test-runner#readme",
   "bugs": {
     "url": "https://github.com/laurence79/cucumber-js-test-runner/issues"
