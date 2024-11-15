@@ -1,19 +1,20 @@
 # Cucumber.js test explorer for VS Code
 
-This extension uses the new(ish) testing API found in vscode versions from 1.59 onwards to run your cucumber.js tests.
+This extension uses the Test Explorer API in vscode to run your cucumber.js tests.
+
+![screenshot](./images/screenshot.png)
 
 ## Features
 
-- Supports monorepos
-- Supports multi-root workspaces
+- Supports monorepos and multi-root workspaces
 - Run your tests from feature files or the Test Explorer
 - Debug your step definitions and support code with breakpoints
+- Failures are parsed to provide links to source code
 - Uses the [Cucumber.js javascript API](https://github.com/cucumber/cucumber-js/blob/main/docs/javascript_api.md) for tight integration.
-- Performs a "dry run" to discover tests that apply to your configuration(s)
+- Performs a "dry run" to discover the tests that apply to your configuration(s)
 
 ## Requirements
 
-- VS Code 1.59 or later
 - `@cucumber/cucumber` node module in your project.
 - Some `*.feature` files.
 
