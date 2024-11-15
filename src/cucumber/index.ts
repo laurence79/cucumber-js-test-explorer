@@ -1,5 +1,5 @@
 export * from './types';
-export { readConfig, configForToken } from './config';
+export { readConfig, configForToken, type ConfigToken } from './config';
 export { default as discoverTestCases } from './discoverTestCases';
 export {
   default as runTests,

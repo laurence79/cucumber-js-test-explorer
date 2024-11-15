@@ -17,6 +17,34 @@
     "configuration": {
       "title": "Cucumber JS Test Runner",
       "properties": {
+        "cucumberJsTestRunner.cwd": {
+          "type": "string",
+          "description": "Working directory"
+        },
+        "cucumberJsTestRunner.configFile": {
+          "type": "string",
+          "description": "Path to the cucumber.js configuration file, relative to cwd"
+        },
+        "cucumberJsTestRunner.profiles": {
+          "type": "array",
+          "description": "cucumber.js configuration profiles to use",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cucumberJsTestRunner.envFiles": {
+          "type": "array",
+          "description": ".env files to load, relative to cwd if supplied, or the workspace root if not.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cucumberJsTestRunner.env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
         "cucumberJsTestRunner.virtualFolders": {
           "type": "array",
           "description": "Array of configurations",
@@ -39,8 +67,20 @@
                 "description": "cucumber.js configuration profiles to use",
                 "items": {
                   "type": "string"
-                },
-                "default": []
+                }
+              },
+              "envFiles": {
+                "type": "array",
+                "description": ".env files to load, relative to cwd if supplied, or the workspace root if not.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "env": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
               }
             },
             "required": [
@@ -71,6 +111,7 @@
   },
   "dependencies": {
     "@cucumber/messages": "^26",
+    "dotenv": "^16.4.5",
     "tree-kill": "^1",
     "ts-array-extensions": "^2.2.3"
   },

@@ -1,34 +1,41 @@
 import 'ts-array-extensions';
 import * as vscode from 'vscode';
-import { readExtensionConfig } from './config/extension';
 import testController from './testController';
+import createConfigPipeline, { ConfigPipeline } from './config/pipeline';
+import log from './log';
 
-const disposeBag: vscode.Disposable[] = [];
-
-const dispose = () => {
-  disposeBag.forEach(d => {
-    d.dispose();
-  });
-  disposeBag.length = 0;
-};
-
-const readConfigAndCreate = () => {
-  vscode.workspace.workspaceFolders?.forEach(workspace => {
-    readExtensionConfig(workspace.uri).forEach(config => {
-      disposeBag.push(...testController(workspace, config));
-    });
-  });
-};
+let pipeline: ConfigPipeline | undefined;
+let instancesDisposables: vscode.Disposable[] | undefined;
+let instancesSubscription: Disposable | undefined;
 
 export function activate() {
-  readConfigAndCreate();
+  log.debug('Activating extension');
 
-  vscode.workspace.onDidChangeConfiguration(() => {
-    dispose();
-    readConfigAndCreate();
-  });
+  pipeline = createConfigPipeline();
+
+  instancesSubscription = pipeline.instances.subscribe(
+    instances => {
+      instancesDisposables?.forEach(disposable => {
+        disposable.dispose();
+      });
+      instancesDisposables = instances.flatMap(instance =>
+        testController(instance),
+      );
+    },
+    { sendCurrentValue: true },
+  );
+
+  log.info('Extension activated');
 }
 
 export function deactivate() {
-  dispose();
+  log.debug('Deactivating extension');
+
+  pipeline?.dispose();
+  instancesDisposables?.forEach(disposable => {
+    disposable.dispose();
+  });
+  instancesSubscription?.[Symbol.dispose]();
+
+  log.info('Extension deactivated');
 }

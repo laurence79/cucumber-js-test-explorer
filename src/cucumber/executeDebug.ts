@@ -9,12 +9,17 @@ interface ExecuteDebugOptions extends ExecuteOptions {
 const executeDebug = ({
   onDebuggerListening,
   onErrorLine,
-  nodeOptions,
+  additionalEnv,
   ...rest
 }: ExecuteDebugOptions) => {
   return execute({
     ...rest,
-    nodeOptions: [nodeOptions, '--inspect=0'].compact().join(' '),
+    additionalEnv: {
+      ...additionalEnv,
+      NODE_OPTIONS: [additionalEnv?.NODE_OPTIONS, '--inspect=0']
+        .compact()
+        .join(' '),
+    },
     onErrorLine: line => {
       onErrorLine(line);
 

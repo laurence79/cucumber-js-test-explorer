@@ -10,7 +10,13 @@ export interface ExecuteOptions {
   config: IRunConfiguration;
   cwd: string;
   log: ExecutionLogger;
-  nodeOptions?: string;
+  /**
+   * Any additional environment variables.
+   *
+   * Will be spread over `process.env`, except for `NODE_OPTIONS` which will be
+   * concatenated with `process.env.NODE_OPTIONS`
+   */
+  additionalEnv?: Record<string, string>;
   onErrorLine: (text: string) => void;
   onMessage: (message: messages.Envelope) => void;
   onOutputLine: (text: string) => void;
@@ -55,8 +61,8 @@ const execute = async ({
   cancellationToken,
   config,
   cwd,
+  additionalEnv,
   log,
-  nodeOptions,
   onErrorLine,
   onMessage,
   onOutputLine,
@@ -66,11 +72,12 @@ const execute = async ({
 
     const env = {
       ...process.env,
+      ...additionalEnv,
       NODE_OPTIONS: [
         process.env.NODE_OPTIONS,
+        additionalEnv?.NODE_OPTIONS,
         // see https://github.com/TypeStrong/ts-node/issues/2053
         '--enable-source-maps',
-        nodeOptions,
       ]
         .compact()
         .join(' '),
@@ -103,7 +110,7 @@ const execute = async ({
     });
 
     const stdout = lineBuffer(line => {
-      log.debug(line);
+      log.trace(line);
       try {
         onMessage(messages.parseEnvelope(line));
       } catch {
@@ -117,7 +124,7 @@ const execute = async ({
     });
 
     const stderr = lineBuffer(line => {
-      log.debug(line);
+      log.trace(line);
       onErrorLine(line);
     });
 

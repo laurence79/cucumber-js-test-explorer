@@ -1,28 +1,31 @@
 import * as vscode from 'vscode';
-import { ExtensionConfig } from '../config/extension';
+import { ConfigInstance } from '../config/instance';
 import { isTestItemWithDefiniteUri } from './utils';
 
 const ROOT_ITEM_ID = 'root';
 
 export const getRootItem = (controller: vscode.TestController) => {
-  const baseItem = controller.items.get(ROOT_ITEM_ID);
+  const item = controller.items.get(ROOT_ITEM_ID);
 
-  if (!baseItem || !isTestItemWithDefiniteUri(baseItem)) {
+  if (!item || !isTestItemWithDefiniteUri(item)) {
     throw new Error('Base item missing, or without uri');
   }
 
-  return baseItem;
+  return item;
 };
 
 export const recycleRootItem = (
   controller: vscode.TestController,
-  extensionConfig: ExtensionConfig,
+  extensionConfig: ConfigInstance,
 ) => {
   controller.items.delete(ROOT_ITEM_ID);
 
+  const label =
+    extensionConfig.baseUri.path.split('/').last() ?? extensionConfig.name;
+
   const item = controller.createTestItem(
     ROOT_ITEM_ID,
-    extensionConfig.name,
+    label,
     extensionConfig.baseUri,
   );
 
