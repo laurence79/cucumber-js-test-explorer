@@ -32,10 +32,6 @@ const createTestTree = (
 
     const rootItem = getRootItem(controller);
 
-    rootItem.children.forEach(child => {
-      rootItem.children.delete(child.id);
-    });
-
     if (!resolvedConfig) return;
 
     if (resolvedConfig instanceof Error) {
@@ -69,6 +65,10 @@ const createTestTree = (
     }
 
     rootItem.error = undefined;
+
+    rootItem.children.forEach(child => {
+      rootItem.children.delete(child.id);
+    });
 
     discoveryResult.testCases.forEach(testCase => {
       ensureTestCaseInTree(controller, testCase);
