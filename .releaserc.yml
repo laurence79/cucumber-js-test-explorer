@@ -1,0 +1,19 @@
+branches:
+  - 'main'
+  - name: 'next'
+    prerelease: true
+    
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - "@semantic-release/github"
+  - - "@semantic-release/npm"
+    - npmPublish: false
+  - - "@semantic-release/changelog"
+    - assets:
+      - CHANGELOG.md
+  - - "@semantic-release/git"
+    - assets:
+      - CHANGELOG.md
+      - package.json
+      - package-lock.json
