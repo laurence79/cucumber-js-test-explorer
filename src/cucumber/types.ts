@@ -1,13 +1,13 @@
 import * as raw from '@cucumber/messages';
 
 export interface CancellationToken {
+  isCancellationRequested: boolean;
   onCancellationRequested: (listener: () => void) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ConfigToken {}
-
 export interface ExecutionLogger {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  trace(message: string, ...args: any[]): void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(message: string, ...args: any[]): void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

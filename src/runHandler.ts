@@ -5,7 +5,7 @@ import log from './log';
 import { getRootItem, getMetaDataForTestItem } from './test-tree';
 import createResultsHandlers from './results-handlers/create';
 import { TestContext } from './testContext';
-import { getCucumberConfig } from './config/cucumber';
+import { getErrorMessage } from './util/errors';
 
 const RUN_EOL = '\r\n';
 
@@ -61,36 +61,74 @@ const getIncludedTestItemsForTestRunRequest = (
   return items;
 };
 
-const runHandler = ({
-  workspace,
-  extensionConfig,
-  controller,
-}: TestContext) => {
+const runHandler = ({ config, controller }: TestContext) => {
   return async (
     shouldDebug: boolean,
     request: vscode.TestRunRequest,
     cancellationToken: vscode.CancellationToken,
   ) => {
-    const name = `${request.include?.map(i => i.label).join(', ') ?? 'All'} (${workspace.name} ${extensionConfig.name})`;
+    const name = `${request.include?.map(i => i.label).join(', ') ?? 'All'} (${config.name})`;
+
+    log.info('Beginning test run', { name });
+
     const run = controller.createTestRun(request, name, true);
 
     const queue = getIncludedTestItemsForTestRunRequest(controller, request);
+
+    log.debug('Identified test items to run', {
+      count: queue.length,
+      ids: queue.map(q => q.id),
+    });
+
+    const configTokenResult = await config.cacheOrResolve();
+
+    if (configTokenResult instanceof Error) {
+      log.error('Test run failed because of a configuration problem', {
+        error: configTokenResult,
+      });
+
+      queue.forEach(item => {
+        run.errored(
+          item,
+          new vscode.TestMessage(getErrorMessage(configTokenResult)),
+        );
+      });
+
+      run.end();
+      return;
+    }
+
     const done: vscode.TestItem[] = [];
 
     queue.forEach(item => {
       run.enqueued(item);
     });
 
-    const configToken = await getCucumberConfig(extensionConfig);
+    const outputHandlers = createResultsHandlers(
+      config.workspace,
+      controller,
+      run,
+    );
 
     while (queue.length > 0 && !cancellationToken.isCancellationRequested) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const item = queue.shift()!;
 
       if (done.includes(item)) continue;
-      if (!item.uri) continue;
+
+      if (!item.uri) {
+        log.warn('Skipping item because it has no Uri', { id: item.id });
+        run.skipped(item);
+
+        continue;
+      }
 
       const affectedItems = flattenTestItem(item, request.exclude);
+
+      log.info('Begin test item', { id: item.id });
+      log.debug('Test item encompasses child items', {
+        ids: affectedItems.map(i => i.id),
+      });
 
       affectedItems.forEach(test => {
         run.started(test);
@@ -110,17 +148,20 @@ const runHandler = ({
       const start = Date.now();
 
       const { success, errors } = await cucumber.runTests({
-        outputHandlers: createResultsHandlers(workspace, controller, run),
+        outputHandlers,
         cancellationToken,
-        configToken,
-        cwd: extensionConfig.baseUri.fsPath,
+        configToken: configTokenResult.cucumberConfig,
+        cwd: config.baseUri.fsPath,
         log,
         names,
-        paths: [getRelativePath(extensionConfig.baseUri, item.uri)],
+        paths: [getRelativePath(config.baseUri, item.uri)],
         shouldDebug,
+        additionalEnv: configTokenResult.env,
       });
 
       if (!success) {
+        log.warn('Test failed with error', { itemId: item.id, errors });
+
         const errorMessage = errors.join(EOL);
         runOutputLog(run)('', 'X FAILED (error)', '', ...errors);
 

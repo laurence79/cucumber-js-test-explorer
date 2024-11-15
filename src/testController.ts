@@ -1,35 +1,51 @@
 import * as vscode from 'vscode';
-import { ExtensionConfig } from './config/extension';
-import resolveHandler from './resolveHandler';
 import runHandler from './runHandler';
 import { TestContext } from './testContext';
-import { setCucumberConfigStale } from './config/cucumber';
-import { recycleRootItem } from './test-tree';
-import watchers from './watchers';
+import createTestTree, { Tree } from './test-tree/create';
+import { ConfigInstance } from './config/instance';
+import { getErrorMessage } from './util/errors';
+import log from './log';
 
-const testController = (
-  workspace: vscode.WorkspaceFolder,
-  extensionConfig: ExtensionConfig,
-) => {
+const testController = (config: ConfigInstance): vscode.Disposable[] => {
   const controller = vscode.tests.createTestController(
-    `cucumber-${workspace.name}-${extensionConfig.name}`,
-    `Cucumber Test Provider (${extensionConfig.name})`,
+    `cucumber-${config.name}`,
+    `Cucumber Test Provider (${config.name})`,
   );
+
+  let tree: Tree | undefined = undefined;
+
+  controller.resolveHandler = async item => {
+    if (!item) return;
+
+    log.debug('Resolving item', {
+      configName: config.name,
+      itemLabel: item.label,
+    });
+
+    const result = await config.cacheOrResolve();
+
+    if (result instanceof Error) {
+      item.error = getErrorMessage(result);
+    }
+
+    await tree?.firstLoad();
+
+    log.info('Item resolved', {
+      configName: config.name,
+      itemLabel: item.label,
+    });
+  };
+
+  tree = createTestTree(controller, config);
+
+  controller.refreshHandler = async cancellation => {
+    await config.refresh(cancellation);
+  };
 
   const context: TestContext = {
     controller,
-    extensionConfig,
-    workspace,
+    config: config,
   };
-
-  controller.resolveHandler = resolveHandler(context);
-
-  controller.refreshHandler = () => {
-    setCucumberConfigStale(extensionConfig);
-    recycleRootItem(controller, extensionConfig);
-  };
-
-  recycleRootItem(controller, extensionConfig);
 
   controller.createRunProfile(
     'Run',
@@ -47,7 +63,7 @@ const testController = (
     },
   );
 
-  return [controller, ...watchers(controller, extensionConfig)];
+  return [controller, tree];
 };
 
 export default testController;

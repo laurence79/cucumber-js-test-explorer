@@ -1,71 +1,67 @@
-# cucumber-js-test-runner README
+# Cucumber.js test runner for VS Code
 
-This is the README for your extension "cucumber-js-test-runner". After writing up a brief description, we recommend including the following sections.
+This extension uses the new(ish) testing API found in vscode versions from 1.59 onwards to run your cucumber.js tests.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Supports monorepos
+- Supports multi-root workspaces
+- Run your tests from feature files or the Test Explorer
+- Debug your step definitions and support code with breakpoints
+- Uses the [Cucumber.js javascript API](https://github.com/cucumber/cucumber-js/blob/main/docs/javascript_api.md) for tight integration.
+- Performs a "dry run" to discover tests that apply to your configuration(s)
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.59 or later
+- `@cucumber/cucumber` node module in your project.
+- Some `*.feature` files.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+| Key | Description | Default |
+|--|--|--|
+| `cucumberJsTestRunner.cwd` | Working directory, relative to the workspace root | Workspace root |
+| `cucumberJsTestRunner.configFile` | Path to the cucumber.js configuration file, relative to cwd | The cucumber.js [default](https://github.com/cucumber/cucumber-js/blob/main/docs/configuration.md) |
+| `cucumberJsTestRunner.profiles` | Cucumber.js configuration profiles to use | None |
+| `cucumberJsTestRunner.envFiles` | .env files to load and pass to the cucumber.js runner, relative to cwd | None |
+| `cucumberJsTestRunner.env` | Environment variables to load and pass to the cucumber.js runner. Overrides any variables with the same name in .env files | None |
 
-## Known Issues
+### Multiple configurations
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+The above configuration can be repeated multiple times under the `cucumberJsTestRunner.virtualFolders` key to support multiple test controllers. This is useful for running different profiles or to support different test projects in a monorepo.
+
+In this scenario the root level configuration (if supplied) is overridden by each virtual folder configuration.
+
+**EXAMPLE**
+```json
+{
+  "cucumberJsTestRunner.cwd": "e2e",
+  "cucumberJsTestRunner.envFiles": [".env"],
+  "cucumberJsTestRunner.virtualFolders": [
+    {
+      "name": "Safari",
+      "profiles": ["safari"]
+    },
+    {
+      "name": "Chrome",
+      "profiles": ["chrome"]
+    },
+    {
+      "name": "iPad",
+      "profiles": ["ipad"]
+    },
+    {
+      "name": "Android phone",
+      "profiles": ["android_phone"],
+      "envFiles": [".env.android"]
+    },
+  ]
+}
+```
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+See [CHANGELOG.md](./CHANGELOG.md)

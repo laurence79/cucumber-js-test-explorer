@@ -1,9 +1,7 @@
 import { EOL } from 'os';
 import * as messages from '@cucumber/messages';
-import { IRunConfiguration } from '@cucumber/cucumber/api';
-import execute from './execute';
+import execute, { ExecuteOptions } from './execute';
 import { getErrorMessage } from './util';
-import { CancellationToken, ExecutionLogger } from './types';
 
 type DryRunResult =
   | {
@@ -15,24 +13,26 @@ type DryRunResult =
       error: string;
     };
 
+type ExecuteDryRunOptions = Pick<
+  ExecuteOptions,
+  'cwd' | 'config' | 'log' | 'cancellationToken' | 'additionalEnv'
+>;
+
 const executeDryRun = async (
-  cwd: string,
-  cucumberConfig: IRunConfiguration,
-  log: ExecutionLogger,
-  cancellationToken?: CancellationToken,
+  options: ExecuteDryRunOptions,
 ): Promise<DryRunResult> => {
   const messages: messages.Envelope[] = [];
   const errors: string[] = [];
 
+  const { log } = options;
+
   try {
     const success = await execute({
-      cancellationToken,
-      log,
-      cwd,
+      ...options,
       config: {
-        ...cucumberConfig,
+        ...options.config,
         runtime: {
-          ...cucumberConfig.runtime,
+          ...options.config.runtime,
           dryRun: true,
         },
         formats: {
@@ -42,7 +42,7 @@ const executeDryRun = async (
           stdout: 'message',
         },
       },
-      onOutputLine: log.debug.bind(log),
+      onOutputLine: log.trace.bind(log),
       onErrorLine: line => {
         log.error(line);
         errors.push(line);

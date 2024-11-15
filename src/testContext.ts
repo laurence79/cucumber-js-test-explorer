@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
-import { ExtensionConfig } from './config/extension';
+import { ConfigInstance } from './config/instance';
 
 export interface TestContext {
   readonly controller: vscode.TestController;
-  readonly extensionConfig: ExtensionConfig;
-  readonly workspace: vscode.WorkspaceFolder;
+  readonly config: ConfigInstance;
 }
