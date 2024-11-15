@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/laurence79/cucumber-js-test-explorer/compare/v1.0.1...v1.0.2) (2024-11-15)
+
+
+### Bug Fixes
+
+* Logging output channel was not renamed ([#4](https://github.com/laurence79/cucumber-js-test-explorer/issues/4)) ([069dd6d](https://github.com/laurence79/cucumber-js-test-explorer/commit/069dd6dba91c30aca65c5c63791aef31c78e61c2))
+* Tree clears on refresh ([#5](https://github.com/laurence79/cucumber-js-test-explorer/issues/5)) ([cae9306](https://github.com/laurence79/cucumber-js-test-explorer/commit/cae93067f067d4206ae22db432a0a9527974114e))
+
 ## [1.0.1](https://github.com/laurence79/cucumber-js-test-explorer/compare/v1.0.0...v1.0.1) (2024-11-15)
 
 
