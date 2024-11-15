@@ -10,7 +10,7 @@ plugins:
   - "@semantic-release/release-notes-generator"
   - - "@semantic-release/github"
     - assets:
-      - "cucumber-js-test-runner-*.visx"
+      - "dist/**/*.*"
   - - "@semantic-release/npm"
     - npmPublish: false
   - - "@semantic-release/changelog"
