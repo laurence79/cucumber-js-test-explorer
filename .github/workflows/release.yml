@@ -28,16 +28,22 @@ jobs:
 
     - uses: lannonbr/vsce-action@4.0.0
       with:
-        args: "package --out dist-${{ steps.release.outputs.new_release_version }}.visx"
+        args: "package"
 
     - name: Attach to release
       uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        artifacts: dist-${{ steps.release.outputs.new_release_version }}.visx
+        artifacts: cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.visx
         name: ${{ steps.release.outputs.new_release_version }}
         omitBodyDuringUpdate: true
         omitPrereleaseDuringUpdate: true
         replacesArtifacts: true
         tag: ${{ steps.release.outputs.new_release_git_tag }}
         token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+    - uses: lannonbr/vsce-action@4.0.0
+      with:
+        args: "publish -i cucumber-js-test-explorer-${{ steps.release.outputs.new_release_version }}.visx"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

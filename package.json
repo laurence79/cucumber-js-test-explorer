@@ -1,15 +1,15 @@
 {
-  "name": "cucumber-js-test-runner",
-  "displayName": "Cucumber JS Test Runner",
+  "name": "cucumber-js-test-explorer",
+  "displayName": "Cucumber JS Test Explorer",
   "description": "Run cucumber-js tests in the VS Code test explorer",
   "version": "1.0.0",
-  "homepage": "https://github.com/laurence79/cucumber-js-test-runner#readme",
+  "homepage": "https://github.com/laurence79/cucumber-js-test-explorer#readme",
   "bugs": {
-    "url": "https://github.com/laurence79/cucumber-js-test-runner/issues"
+    "url": "https://github.com/laurence79/cucumber-js-test-explorer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/laurence79/cucumber-js-test-runner.git"
+    "url": "git+https://github.com/laurence79/cucumber-js-test-explorer.git"
   },
   "license": "ISC",
   "author": "laurence79",
@@ -31,37 +31,37 @@
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
-      "title": "Cucumber JS Test Runner",
+      "title": "Cucumber JS Test Explorer",
       "properties": {
-        "cucumberJsTestRunner.cwd": {
+        "cucumberJsTestExplorer.cwd": {
           "type": "string",
           "description": "Working directory"
         },
-        "cucumberJsTestRunner.configFile": {
+        "cucumberJsTestExplorer.configFile": {
           "type": "string",
           "description": "Path to the cucumber.js configuration file, relative to cwd"
         },
-        "cucumberJsTestRunner.profiles": {
+        "cucumberJsTestExplorer.profiles": {
           "type": "array",
           "description": "cucumber.js configuration profiles to use",
           "items": {
             "type": "string"
           }
         },
-        "cucumberJsTestRunner.envFiles": {
+        "cucumberJsTestExplorer.envFiles": {
           "type": "array",
           "description": ".env files to load, relative to cwd if supplied, or the workspace root if not.",
           "items": {
             "type": "string"
           }
         },
-        "cucumberJsTestRunner.env": {
+        "cucumberJsTestExplorer.env": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
           }
         },
-        "cucumberJsTestRunner.virtualFolders": {
+        "cucumberJsTestExplorer.virtualFolders": {
           "type": "array",
           "description": "Array of configurations",
           "items": {
