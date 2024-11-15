@@ -1,0 +1,154 @@
+{
+  "name": "cucumber-js-test-runner",
+  "displayName": "Cucumber JS Test Runner",
+  "description": "Run cucumber-js tests in the VS Code test explorer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/laurence79/cucumber-js-test-runner#readme",
+  "bugs": {
+    "url": "https://github.com/laurence79/cucumber-js-test-runner/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laurence79/cucumber-js-test-runner.git"
+  },
+  "license": "ISC",
+  "author": "laurence79",
+  "publisher": "laurence79",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Testing"
+  ],
+  "galleryBanner": {
+    "color": "#1F3545",
+    "theme": "dark"
+  },
+  "icon": "images/icon.png",
+  "activationEvents": [
+    "workspaceContains:**/*.feature"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Cucumber JS Test Runner",
+      "properties": {
+        "cucumberJsTestRunner.cwd": {
+          "type": "string",
+          "description": "Working directory"
+        },
+        "cucumberJsTestRunner.configFile": {
+          "type": "string",
+          "description": "Path to the cucumber.js configuration file, relative to cwd"
+        },
+        "cucumberJsTestRunner.profiles": {
+          "type": "array",
+          "description": "cucumber.js configuration profiles to use",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cucumberJsTestRunner.envFiles": {
+          "type": "array",
+          "description": ".env files to load, relative to cwd if supplied, or the workspace root if not.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cucumberJsTestRunner.env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "cucumberJsTestRunner.virtualFolders": {
+          "type": "array",
+          "description": "Array of configurations",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Working directory"
+              },
+              "configFile": {
+                "type": "string",
+                "description": "Path to the cucumber.js configuration file, relative to cwd"
+              },
+              "profiles": {
+                "type": "array",
+                "description": "cucumber.js configuration profiles to use",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "envFiles": {
+                "type": "array",
+                "description": ".env files to load, relative to cwd if supplied, or the workspace root if not.",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "env": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "name"
+            ]
+          }
+        }
+      }
+    },
+    "testing": {
+      "testProviders": [
+        {
+          "id": "cucumberJsTestProvider",
+          "label": "Cucumber"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.cjs",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.cjs --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.cjs --production",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@cucumber/messages": "^26",
+    "dotenv": "^16.4.5",
+    "tree-kill": "^1",
+    "ts-array-extensions": "^2.2.3"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11",
+    "@cucumber/gherkin": "^30",
+    "@eslint/js": "^9.11.1",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.94.0",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.13.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import-x": "^4.4.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.0"
+  }
+}

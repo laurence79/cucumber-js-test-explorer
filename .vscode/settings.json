@@ -1,0 +1,33 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "cSpell.language": "en-GB",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.renderWhitespace": "boundary",
+  "editor.rulers": [
+    80
+  ],
+  "eslint.lintTask.enable": true,
+  "eslint.validate": [
+    "typescript"
+  ],
+  "files.exclude": {
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "node_modules": true,
+  },
+  "javascript.inlayHints.parameterNames.enabled": "literals",
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.inlayHints.parameterNames.enabled": "literals",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "color"
+  ],
+}

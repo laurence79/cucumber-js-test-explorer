@@ -1,0 +1,43 @@
+name: Release
+on: workflow_dispatch
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Configure NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        cache: npm
+    
+    - run: npm ci
+    - run: npm run package
+
+    - id: release
+      name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v3.4.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+    - uses: lannonbr/vsce-action@4.0.0
+      with:
+        args: "package --out dist-${{ steps.release.outputs.new_release_version }}.visx"
+
+    - name: Attach to release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: dist-${{ steps.release.outputs.new_release_version }}.visx
+        name: ${{ steps.release.outputs.new_release_version }}
+        omitBodyDuringUpdate: true
+        omitPrereleaseDuringUpdate: true
+        replacesArtifacts: true
+        tag: ${{ steps.release.outputs.new_release_git_tag }}
+        token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
