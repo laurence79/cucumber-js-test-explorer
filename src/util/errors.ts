@@ -9,5 +9,5 @@ export const getErrorMessage = (error: unknown) =>
 export const coerceError = (error: unknown): Error => {
   if (error instanceof Error) return error;
 
-  return new Error(getErrorMessage(error));
+  return new Error(getErrorMessage(error), { cause: error });
 };
