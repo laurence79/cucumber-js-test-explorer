@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/laurence79/cucumber-js-test-explorer/compare/v1.0.2...v1.0.3) (2024-11-30)
+
+
+### Bug Fixes
+
+* Test failures reported as errors ([#6](https://github.com/laurence79/cucumber-js-test-explorer/issues/6)) ([d89c335](https://github.com/laurence79/cucumber-js-test-explorer/commit/d89c335188c0ed50cb3f443b8d65ed5ef2efb63e))
+
 ## [1.0.2](https://github.com/laurence79/cucumber-js-test-explorer/compare/v1.0.1...v1.0.2) (2024-11-15)
 
 
