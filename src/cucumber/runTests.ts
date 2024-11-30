@@ -45,7 +45,7 @@ const runTests = async ({
   shouldDebug,
   additionalEnv,
 }: RunTestsOptions): Promise<{
-  success: boolean;
+  processSuccess: boolean;
   errors: string[];
   otherOutput: string[];
 }> => {
@@ -53,7 +53,6 @@ const runTests = async ({
   const otherOutput: string[] = [];
 
   try {
-    let testRunSuccess: boolean | undefined;
     let processSuccess: boolean | undefined;
 
     const baseConfig = configForToken(configToken);
@@ -112,10 +111,6 @@ const runTests = async ({
             ),
           );
         }
-
-        if (message.testRunFinished) {
-          testRunSuccess = message.testRunFinished.success;
-        }
       },
       onOutputLine: text => {
         otherOutput.push(text);
@@ -134,7 +129,7 @@ const runTests = async ({
     }
 
     return {
-      success: (testRunSuccess && processSuccess) ?? false,
+      processSuccess,
       errors,
       otherOutput,
     };
@@ -142,7 +137,7 @@ const runTests = async ({
     const errorMessage = getErrorMessage(error);
 
     return {
-      success: false,
+      processSuccess: false,
       errors: [errorMessage, ...errors],
       otherOutput,
     };

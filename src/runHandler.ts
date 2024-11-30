@@ -147,7 +147,7 @@ const runHandler = ({ config, controller }: TestContext) => {
 
       const start = Date.now();
 
-      const { success, errors } = await cucumber.runTests({
+      const { processSuccess, errors } = await cucumber.runTests({
         outputHandlers,
         cancellationToken,
         configToken: configTokenResult.cucumberConfig,
@@ -159,8 +159,8 @@ const runHandler = ({ config, controller }: TestContext) => {
         additionalEnv: configTokenResult.env,
       });
 
-      if (!success) {
-        log.warn('Test failed with error', { itemId: item.id, errors });
+      if (!processSuccess) {
+        log.warn('Tests failed with error', { itemId: item.id, errors });
 
         const errorMessage = errors.join(EOL);
         runOutputLog(run)('', 'X FAILED (error)', '', ...errors);
